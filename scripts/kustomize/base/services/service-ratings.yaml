@@ -1,0 +1,12 @@
+apiVersion: v1 
+kind: Service
+metadata: 
+  name: ratings-service
+  namespace: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  selector:
+    app: ratings
+  ports:
+  - port: 3002

@@ -1,0 +1,23 @@
+config:
+  inputs: |
+    [INPUT]
+        Name tail
+        Path /var/log/containers/*.log
+        multiline.parser docker, cri
+        Tag kube.*
+        Mem_Buf_Limit 5MB
+        Skip_Long_Lines On
+ 
+  outputs: |
+    [OUTPUT]
+        Name nrlogs
+        Match *
+        api_key API_KEY_PLACEHOLDER
+ 
+  customParsers: |
+    [PARSER]
+        Name cri
+        Format regex
+        Regex ^(?<time>\[^ \]+) (?<stream>stdout|stderr) (?<logtag>\[^ \]\*) (?<message>.\*)$
+        Time_Key time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L%z

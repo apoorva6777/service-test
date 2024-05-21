@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: details-deployment
+  namespace: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  selector:
+    matchLabels:
+      app: details
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: details
+    spec:
+      serviceAccountName: details-service-account
+      imagePullSecrets:
+      - name: ocirsecret
+      containers:
+      - name: details
+        image: iad.ocir.io/idmaqhrbiuyo/details-ms:v0.1
+        ports:
+        - containerPort: 3001
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 2  
+        resources:
+          limits:
+            cpu: "256m" 
+            memory: "512Mi"
+          requests:
+            cpu: "256m"
+            memory: "512Mi"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: oci.oraclecloud.com/oke-is-preemptible
+                operator: In
+                values:
+                - "true"     
+      tolerations:
+      - key: oci.oraclecloud.com/oke-is-preemptible
+        operator: Exists
+        effect: "NoSchedule"
+

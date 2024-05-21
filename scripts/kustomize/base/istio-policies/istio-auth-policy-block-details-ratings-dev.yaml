@@ -1,0 +1,17 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: "block-details-ratings-communication"
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: details
+  action: DENY
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/dev/sa/ratings-service-account"]
+    to:
+    - operation:
+        methods: ["GET"]

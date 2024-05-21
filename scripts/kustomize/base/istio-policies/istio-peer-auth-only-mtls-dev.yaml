@@ -1,0 +1,10 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: only-mtls-peer-dev
+  namespace: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  mtls:
+    mode: STRICT

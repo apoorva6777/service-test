@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kube-prometheus-stack-prometheus
+  name: prometheus-lb
+  namespace: monitoring
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+    service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"
+spec:
+  ports:
+  - port: 9090
+    targetPort: 9090
+  selector:
+    app.kubernetes.io/name: prometheus
+    operator.prometheus.io/name: my-kube-prometheus-stack-prometheus
+  type: LoadBalancer
+
+

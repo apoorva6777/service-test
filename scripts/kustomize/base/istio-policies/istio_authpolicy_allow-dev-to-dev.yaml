@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-dev-to-dev
+  namespace: dev
+spec:
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: ["dev"]

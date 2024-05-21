@@ -1,0 +1,8 @@
+{
+  "dev": {
+    "compartment_id": "",
+    "cluster_cluster_pod_network_options_cni_type": "OCI_VCN_IP_NATIVE",
+    "cluster_endpoint_config_is_public_ip_enabled": true,
+    "cluster_image_policy_config_is_policy_enabled": false,
+  }
+}

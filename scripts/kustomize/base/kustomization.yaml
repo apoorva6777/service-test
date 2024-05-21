@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+  
+resources:
+- cluster-role-binding-dev.yaml
+- deployment-details.yaml
+- deployment-product.yaml
+- deployment-ratings.yaml
+- ingress-product.yaml
+- istio_auth_allow_istio_to_dev.yaml
+- istio_auth_deny_all_dev.yaml
+- istio_authpolicy_allow-dev-to-dev.yaml
+- istio_dest-rule_only-istio-mtls_dev.yaml
+- istio-auth-policy-block-details-ratings-dev.yaml
+- istio-peer-auth-only-mtls-dev.yaml
+- namespace-dev.yaml
+- service-account-details-dev.yaml
+- service-account-product-dev.yaml
+- service-account-ratings-dev.yaml
+- service-details.yaml
+- service-product.yaml
+- service-ratings.yaml
+
+
+
+

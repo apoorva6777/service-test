@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ratings-deployment
+  namespace: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  selector:
+    matchLabels:
+      app: ratings
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ratings
+    spec:
+      serviceAccountName: ratings-service-account
+      imagePullSecrets:
+      - name: ocirsecret
+      containers:
+      - name: details
+        image: iad.ocir.io/idmaqhrbiuyo/ratings-ms:v0.1
+        ports:
+        - containerPort: 3002
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 2   
+        resources:
+          limits:
+            cpu: "256m" 
+            memory: "512Mi"
+          requests:
+            cpu: "256m"
+            memory: "512Mi"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: oci.oraclecloud.com/oke-is-preemptible
+                operator: In
+                values:
+                - "true"     
+      tolerations:
+      - key: oci.oraclecloud.com/oke-is-preemptible
+        operator: Exists
+        effect: "NoSchedule"
